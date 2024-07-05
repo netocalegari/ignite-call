@@ -6,13 +6,13 @@ import previewImage from "../../assets/app-preview.png";
 import { ClaimUsernameForm } from "./components/ClaimUsernameForm";
 import { Container, Hero, Preview } from "./styles";
 
-export default function Home() {
+function Home() {
   return (
     <Container>
       <Hero>
         <Heading size="4xl">Easy booking</Heading>
-        <Text size="xl">
-          Connect your calendar and allow people to book your time.
+        <Text size="lg">
+          Sync with your calendar an allow ohers to book your time.
         </Text>
 
         <ClaimUsernameForm />
@@ -25,8 +25,10 @@ export default function Home() {
           quality={100}
           priority
           alt="Preview of the working app"
-        ></Image>
+        />
       </Preview>
     </Container>
   );
 }
+
+export default Home;
