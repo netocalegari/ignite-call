@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { api } from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Heading, MultiStep, Text, TextInput } from "@ignite-ui/react";
 
@@ -46,8 +47,15 @@ export default function Register() {
     }
   }, [router.query?.username, setValue]);
 
-  const handleRegister = (data: RegisterFormData) => {
-    console.log(data);
+  const handleRegister = async (data: RegisterFormData) => {
+    try {
+      await api.post("/users", {
+        name: data.name,
+        username: data.username,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
