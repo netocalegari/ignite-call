@@ -7,7 +7,7 @@ import { Button, Text, TextInput } from "@ignite-ui/react";
 
 import { Form, FormAnnotation } from "./styles";
 
-const ClaimUsernameFormSchema = z.object({
+const claimUsernameFormSchema = z.object({
   username: z
     .string()
     .min(3, { message: "Username must be at least 3 characters long" })
@@ -17,20 +17,19 @@ const ClaimUsernameFormSchema = z.object({
     .toLowerCase(),
 });
 
-type ClaimUsernameFormData = z.infer<typeof ClaimUsernameFormSchema>;
-
+type ClaimUsernameFormData = z.infer<typeof claimUsernameFormSchema>;
 export function ClaimUsernameForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ClaimUsernameFormData>({
-    resolver: zodResolver(ClaimUsernameFormSchema),
+    resolver: zodResolver(claimUsernameFormSchema),
   });
 
-  const handleClaimUsername = async (data: ClaimUsernameFormData) => {
+  async function handleClaimUsername(data: ClaimUsernameFormData) {
     console.log(data);
-  };
+  }
 
   return (
     <>
@@ -38,20 +37,21 @@ export function ClaimUsernameForm() {
         <TextInput
           size="sm"
           prefix="ignite.com/"
-          placeholder="your-user"
+          placeholder="your-username"
           {...register("username")}
         />
-        <Button size="sm" type="submit">
+        <Button size="sm" type="Submit">
           Book user
           <ArrowRight />
         </Button>
       </Form>
 
       <FormAnnotation>
-        <Text size="sm"></Text>{" "}
-        {errors.username
-          ? errors.username.message
-          : "Inform the desired username"}
+        <Text size="sm">
+          {errors.username
+            ? errors.username.message
+            : "Search for the desired user"}
+        </Text>
       </FormAnnotation>
     </>
   );
