@@ -45,6 +45,7 @@ export default function Register() {
       setValue("username", String(router.query.username));
     }
   }, [router.query?.username, setValue]);
+
   const handleRegister = (data: RegisterFormData) => {
     console.log(data);
   };
