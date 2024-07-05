@@ -6,7 +6,7 @@ import previewImage from "../../assets/app-preview.png";
 import { ClaimUsernameForm } from "./components/ClaimUsernameForm";
 import { Container, Hero, Preview } from "./styles";
 
-export default function Home() {
+function Home() {
   return (
     <Container>
       <Hero>
@@ -30,3 +30,5 @@ export default function Home() {
     </Container>
   );
 }
+
+export default Home;
