@@ -1,3 +1,4 @@
+import { Axios, AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { ArrowRight } from "phosphor-react";
 import { useEffect } from "react";
@@ -20,11 +21,7 @@ const registerFormSchema = z.object({
     .toLowerCase(),
   name: z
     .string()
-    .min(3, { message: "Name must be at least 3 characters long" })
-    .regex(/^([a-z\\-]+)$/i, {
-      message: "Name must not contain numbers, symbols or whitespace",
-    })
-    .toLowerCase(),
+    .min(3, { message: "Name must be at least 3 characters long" }),
 });
 
 type RegisterFormData = z.infer<typeof registerFormSchema>;
@@ -54,7 +51,12 @@ export default function Register() {
         username: data.username,
       });
     } catch (err) {
-      console.log(err);
+      if (err instanceof AxiosError && err?.response?.data?.message) {
+        alert(err.response.data.message);
+        return;
+      }
+
+      console.error(err);
     }
   };
 
@@ -86,8 +88,8 @@ export default function Register() {
         <label>
           <Text size="sm">Full name</Text>
           <TextInput placeholder="your-name" {...register("name")} />
-          {errors.username && (
-            <FormError size="sm">{errors.username.message}</FormError>
+          {errors.name && (
+            <FormError size="sm">{errors.name.message}</FormError>
           )}
         </label>
 
