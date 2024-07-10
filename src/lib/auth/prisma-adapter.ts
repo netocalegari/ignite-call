@@ -42,9 +42,13 @@ export default function PrismaAdapter(
     },
 
     async getUser(id) {
-      const user = await prisma.user.findUniqueOrThrow({
+      const user = await prisma.user.findUnique({
         where: { id },
       });
+
+      if (!user) {
+        return null;
+      }
 
       return {
         id: user.id,
@@ -56,9 +60,13 @@ export default function PrismaAdapter(
       };
     },
     async getUserByEmail(email) {
-      const user = await prisma.user.findUniqueOrThrow({
+      const user = await prisma.user.findUnique({
         where: { email },
       });
+
+      if (!user) {
+        return null;
+      }
 
       return {
         id: user?.id,
@@ -70,10 +78,10 @@ export default function PrismaAdapter(
       };
     },
     async getUserByAccount({ providerAccountId, provider }) {
-      const { user } = await prisma.account.findUniqueOrThrow({
+      const account = await prisma.account.findUnique({
         where: {
-          provider_id_provider_account_id: {
-            provider_id: provider,
+          provider_provider_account_id: {
+            provider,
             provider_account_id: providerAccountId,
           },
         },
@@ -81,6 +89,12 @@ export default function PrismaAdapter(
           user: true,
         },
       });
+
+      if (!account) {
+        return null;
+      }
+
+      const { user } = account;
 
       return {
         id: user?.id,
@@ -116,16 +130,16 @@ export default function PrismaAdapter(
       await prisma.account.create({
         data: {
           user_id: account.userId,
-          provider_type: account.type,
-          provider_id: account.provider,
+          type: account.type,
+          provider: account.provider,
           provider_account_id: account.providerAccountId,
           refresh_token: account.refresh_token,
           access_token: account.access_token,
-          // expires_at: account.expiresAt,
-          // token_type: account.token_type,
-          // scope: account.scope,
-          // id_token: account.id_token,
-          // session_state: account.session_state,
+          expires_at: account.expires_at,
+          token_type: account.token_type,
+          scope: account.scope,
+          id_token: account.id_token,
+          session_state: account.session_state,
         },
       });
     },
@@ -147,7 +161,7 @@ export default function PrismaAdapter(
     },
 
     async getSessionAndUser(sessionToken) {
-      const { user, ...session } = await prisma.session.findUniqueOrThrow({
+      const prismaSession = await prisma.session.findUnique({
         where: {
           session_token: sessionToken,
         },
@@ -155,6 +169,12 @@ export default function PrismaAdapter(
           user: true,
         },
       });
+
+      if (!prismaSession) {
+        return null;
+      }
+
+      const { user, ...session } = prismaSession;
 
       return {
         session: {
@@ -174,8 +194,8 @@ export default function PrismaAdapter(
     },
 
     async updateSession({ sessionToken, userId, expires }) {
-      const prismaSession = await prisma.user.update({
-        where: { session_token: sessionToken! },
+      const prismaSession = await prisma.session.update({
+        where: { session_token: sessionToken },
         data: {
           expires,
           user_id: userId,

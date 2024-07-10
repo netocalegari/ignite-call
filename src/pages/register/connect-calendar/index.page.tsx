@@ -16,6 +16,8 @@ export default function Register() {
   const hasAuthError = !!router.query.error;
   const isSignedIn = session.status === "authenticated";
 
+  console.log(session);
+
   const handleConnectCalendar = async () => {
     await signIn("google");
   };
