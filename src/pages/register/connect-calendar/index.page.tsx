@@ -15,7 +15,10 @@ export default function Register() {
 
   const hasAuthError = !!router.query.error;
   const isSignedIn = session.status === "authenticated";
-  // const handleRegister = async (data) => {};
+
+  const handleConnectCalendar = async () => {
+    await signIn("google");
+  };
 
   return (
     <Container>
@@ -33,18 +36,18 @@ export default function Register() {
         <ConnectItem>
           <Text>Google Calendar</Text>
           {isSignedIn ? (
+            <Button size="sm" disabled>
+              Connected
+              <Check />
+            </Button>
+          ) : (
             <Button
               variant="secondary"
               size="sm"
-              onClick={() => signIn("google")}
+              onClick={handleConnectCalendar}
             >
               Connect
               <ArrowRight />
-            </Button>
-          ) : (
-            <Button>
-              Connected
-              <Check />
             </Button>
           )}
         </ConnectItem>
@@ -56,7 +59,7 @@ export default function Register() {
           </AuthError>
         )}
 
-        <Button type="submit" disabled={isSignedIn}>
+        <Button type="submit" disabled={!isSignedIn}>
           Next step
           <ArrowRight />
         </Button>
