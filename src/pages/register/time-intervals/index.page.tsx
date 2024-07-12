@@ -16,7 +16,7 @@ import {
   TextInput,
 } from "@ignite-ui/react";
 
-import { Container, Header } from "../register/styles";
+import { Container, Header } from "../styles";
 import {
   FormError,
   IntervalBox,
