@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { setCookie } from "nookies";
-import { date } from "zod";
 
 import { prisma } from "../../../lib/prisma";
 
