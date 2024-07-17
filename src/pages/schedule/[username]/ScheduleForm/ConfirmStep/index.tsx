@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { CalendarBlank, Clock } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,7 +18,30 @@ const confirmFormSchema = z.object({
 
 type ConfirmFormData = z.infer<typeof confirmFormSchema>;
 
-export function ConfirmStep() {
+interface ConfirmStepProps {
+  schedulingDate: Date;
+  onCancelConfirmation: () => void;
+}
+
+function ordinalSuffixOf(day: number) {
+  let j = day % 10,
+    k = day % 100;
+  if (j === 1 && k !== 11) {
+    return "st";
+  }
+  if (j === 2 && k !== 12) {
+    return "nd";
+  }
+  if (j === 3 && k !== 13) {
+    return "rd";
+  }
+  return "th";
+}
+
+export function ConfirmStep({
+  schedulingDate,
+  onCancelConfirmation,
+}: ConfirmStepProps) {
   const {
     register,
     handleSubmit,
@@ -29,17 +53,25 @@ export function ConfirmStep() {
     console.log(data);
   };
 
+  const day = dayjs(schedulingDate).format("DD");
+
+  const fullDate = dayjs(schedulingDate).format(
+    `MMMM DD[${ordinalSuffixOf(Number(day))}] YYYY`
+  );
+  // const fullDate = dayjs(schedulingDate).format("DD[ of ]MMMM[, ] YYYY");
+  const fullTime = dayjs(schedulingDate).format("HH:mm[h]");
+
   return (
     <ConfirmForm onSubmit={handleSubmit(handleConfirmScheduling)} as="form">
       <FormHeader>
         <Text>
           <CalendarBlank />
-          September 22th of 2024
+          {fullDate}
         </Text>
 
         <Text>
           <Clock />
-          18:00h
+          {fullTime}
         </Text>
       </FormHeader>
 
@@ -67,7 +99,7 @@ export function ConfirmStep() {
       </label>
 
       <FormActions>
-        <Button type="button" variant="tertiary">
+        <Button type="button" variant="tertiary" onClick={onCancelConfirmation}>
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting}>
