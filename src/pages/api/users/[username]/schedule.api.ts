@@ -56,5 +56,7 @@ export default async function handle(
     },
   });
 
+  const calendar = google;
+
   return res.status(201).end();
 }
