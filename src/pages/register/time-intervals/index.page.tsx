@@ -147,7 +147,7 @@ export default function TimeIntervals() {
         <Heading as="strong">Almost done!</Heading>
         <Text>Define the period of the day you are available on each day.</Text>
 
-        <MultiStep size={4} currentStep={2} />
+        <MultiStep size={4} currentStep={3} />
       </Header>
 
       <IntervalBox as="form" onSubmit={handleSubmit(handleSetTimeIntervals)}>

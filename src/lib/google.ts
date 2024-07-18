@@ -4,6 +4,7 @@ import { google } from "googleapis";
 import { prisma } from "./prisma";
 
 export async function getGoogleOAuthToken(userId: string) {
+  console.log("🚀 ~ getGoogleOAuthToken ~ userId:", userId);
   const account = await prisma.account.findFirstOrThrow({
     where: {
       provider: "google",
@@ -25,6 +26,7 @@ export async function getGoogleOAuthToken(userId: string) {
   if (!account.expires_at) {
     return auth;
   }
+  console.log("🚀 ~ getGoogleOAuthToken ~ account.id:", account.id);
 
   const isTokenExpired = dayjs(account.expires_at * 1000).isBefore(new Date());
 
