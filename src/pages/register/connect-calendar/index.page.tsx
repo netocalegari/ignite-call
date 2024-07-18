@@ -1,4 +1,5 @@
 import { signIn, useSession } from "next-auth/react";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { ArrowRight, Check } from "phosphor-react";
 
@@ -26,49 +27,57 @@ export default function ConnectCalendar() {
   };
 
   return (
-    <Container>
-      <Header>
-        <Heading as="strong">Connect your schedule!</Heading>
-        <Text>
-          Connect your calendar to automatically verify your busy hours and new
-          events as they are booked.
-        </Text>
+    <>
+      <NextSeo title="Connect you Google Calendar | Ignite Call" noindex />
 
-        <MultiStep size={4} currentStep={2} />
-      </Header>
+      <Container>
+        <Header>
+          <Heading as="strong">Connect your schedule!</Heading>
+          <Text>
+            Connect your calendar to automatically verify your busy hours and
+            new events as they are booked.
+          </Text>
 
-      <ConnectBox>
-        <ConnectItem>
-          <Text>Google Calendar</Text>
-          {isSignedIn ? (
-            <Button size="sm" disabled>
-              Connected
-              <Check />
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleConnectCalendar}
-            >
-              Connect
-              <ArrowRight />
-            </Button>
+          <MultiStep size={4} currentStep={2} />
+        </Header>
+
+        <ConnectBox>
+          <ConnectItem>
+            <Text>Google Calendar</Text>
+            {isSignedIn ? (
+              <Button size="sm" disabled>
+                Connected
+                <Check />
+              </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleConnectCalendar}
+              >
+                Connect
+                <ArrowRight />
+              </Button>
+            )}
+          </ConnectItem>
+
+          {hasAuthError && (
+            <AuthError size="sm">
+              Error connecting to Google. Verify if you have accepted all
+              necessary access permissions.
+            </AuthError>
           )}
-        </ConnectItem>
 
-        {hasAuthError && (
-          <AuthError size="sm">
-            Error connecting to Google. Verify if you have accepted all
-            necessary access permissions.
-          </AuthError>
-        )}
-
-        <Button onClick={handleNavigation} type="submit" disabled={!isSignedIn}>
-          Next step
-          <ArrowRight />
-        </Button>
-      </ConnectBox>
-    </Container>
+          <Button
+            onClick={handleNavigation}
+            type="submit"
+            disabled={!isSignedIn}
+          >
+            Next step
+            <ArrowRight />
+          </Button>
+        </ConnectBox>
+      </Container>
+    </>
   );
 }

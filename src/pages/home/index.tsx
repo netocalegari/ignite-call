@@ -1,3 +1,4 @@
+import { NextSeo } from "next-seo";
 import Image from "next/image";
 
 import { Heading, Text } from "@ignite-ui/react";
@@ -8,25 +9,32 @@ import { Container, Hero, Preview } from "./styles";
 
 export default function Home() {
   return (
-    <Container>
-      <Hero>
-        <Heading size="4xl">Easy booking</Heading>
-        <Text size="xl">
-          Connect your calendar and allow people to book your time.
-        </Text>
+    <>
+      <NextSeo
+        title="Simplify your schedule | Ignite Call"
+        description="Connect your calendar and allow people to book your time."
+      />
 
-        <ClaimUsernameForm />
-      </Hero>
+      <Container>
+        <Hero>
+          <Heading size="4xl">Easy booking</Heading>
+          <Text size="xl">
+            Connect your calendar and allow people to book your time.
+          </Text>
 
-      <Preview>
-        <Image
-          src={previewImage}
-          height={400}
-          quality={100}
-          priority
-          alt="Preview of the working app"
-        ></Image>
-      </Preview>
-    </Container>
+          <ClaimUsernameForm />
+        </Hero>
+
+        <Preview>
+          <Image
+            src={previewImage}
+            height={400}
+            quality={100}
+            priority
+            alt="Preview of the working app"
+          ></Image>
+        </Preview>
+      </Container>
+    </>
   );
 }
